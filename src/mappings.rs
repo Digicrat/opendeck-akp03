@@ -16,6 +16,7 @@ pub const DEVICE_TYPE: u8 = 7; // StreamDeckPlus
 pub enum Kind {
     Akp05E,
     Akp05EPro,
+    N1,
     N4E,
     N4,
     N4ProE,
@@ -27,6 +28,7 @@ pub enum Kind {
 }
 
 pub const VSDINSIDE_VID: u16 = 0x5548;
+pub const VSD_N1_PID: u16 = 0x1002;
 pub const VSD_N4_PRO_PID: u16 = 0x1023;
 
 pub const AJAZZ_VID: u16 = 0x0300;
@@ -66,10 +68,12 @@ pub const VSD_N4_PRO_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, VSDINSIDE_V
 pub const MSD_PRO_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, MARS_GAMING_VID, MSD_PRO_PID);
 pub const CN003_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, SOOMFON_VID, CN003_PID);
 pub const SS552_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, SS552_VID, SS552_PID);
+pub const N1_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, VSDINSIDE_VID, VSD_N1_PID);
 
 pub const QUERIES: &[DeviceQuery] = &[
     AKP05E_QUERY,
     AKP05E_PRO_QUERY,
+    N1_QUERY,
     N4E_QUERY,
     N4_QUERY,
     N4_PRO_E_QUERY,
@@ -123,6 +127,13 @@ impl Kind {
                 _ => None,
             },
 
+            VSDINSIDE_VID => match pid {
+                VSD_N1_PID => Some(Kind::N1),
+                _ => None,
+            },
+
+
+
             _ => None,
         }
     }
@@ -140,6 +151,7 @@ impl Kind {
             Self::N4ProE => "Mirabox N4 Pro E",
             Self::N4Pro => "Mirabox N4 Pro",
             // VSDInside devices
+            Self::N1 => "VSDInside N1",
             Self::VsdN4Pro => "VSDInside N4 Pro",
             // Mars Gaming devices
             Self::MsdPro => "Mars Gaming MSD-Pro",
